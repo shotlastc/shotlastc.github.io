@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-import Dither from "./components/Dither";
 import DarkVeil from "./components/DarkVeil";
 import SlideBox from "./components/SlideBox";
 import SlideContent from "./components/SlideContent";
