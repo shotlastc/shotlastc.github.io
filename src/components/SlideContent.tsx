@@ -1,5 +1,6 @@
 import AboutMeSlide from "./AboutMeSlide";
 import SkillsSlide from "./SkillsSlide";
+import ProjectsSlide from "./ProjectsSlide";
 
 interface SlideContentProps {
   index: number;
@@ -12,7 +13,7 @@ export default function SlideContent({ index }: SlideContentProps) {
     case 1:
       return <SkillsSlide />;
     case 2:
-      return <></>;
+      return <ProjectsSlide />;
     case 3:
       return <></>;
     default:
