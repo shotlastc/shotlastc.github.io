@@ -68,9 +68,9 @@ export default function AboutMeSlide() {
             md: "right -15vw bottom 0px",
           },
           backgroundRepeat: "no-repeat",
-          opacity: { xs: 0.6, sm: 0.4, md: 0.9 },
+          opacity: { xs: 0.9, sm: 0.9, md: 0.9 },
           maskImage: {
-            xs: "linear-gradient(to bottom, black 0%, black 20%, transparent 90%)",
+            xs: "linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.3) 60%, transparent 90%)",
             md: "linear-gradient(to left, black 0%, black 20%, transparent 50%)",
           },
           pointerEvents: "none",
@@ -111,6 +111,7 @@ export default function AboutMeSlide() {
           direction="row"
           spacing={{ xs: 0.8, sm: 1, md: 1 }}
           alignItems="center"
+          useFlexGap
           flexWrap="wrap"
           sx={{
             mb: { xs: 2, md: 3 },
