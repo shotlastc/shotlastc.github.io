@@ -11,7 +11,11 @@ import { useRef, useState } from "react";
 const PAGES = 4;
 
 export default function App() {
-  const { activePage, scrollRef, scrollToPage } = usePageScroll(PAGES);
+  const mobile = typeof window !== "undefined" && window.innerWidth <= 600;
+  const { activePage, scrollRef, scrollToPage } = usePageScroll(
+    PAGES,
+    mobile ? "horizontal" : "vertical",
+  );
   const [mobilePage, setMobilePage] = useState(0);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
@@ -30,8 +34,6 @@ export default function App() {
       if (delta > 0 && mobilePage > 0) setMobilePage(mobilePage - 1);
     }
   };
-
-  const mobile = typeof window !== "undefined" && window.innerWidth <= 600;
 
   return (
     <Box
@@ -68,33 +70,44 @@ export default function App() {
             height: "100vh",
             borderRadius: 0,
             overflow: "hidden",
-            position: "relative",
-            touchAction: "pan-y",
+
+            //touchAction: "pan-y pan-x",
             backdropFilter: "blur(50px)",
           }}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          // onTouchStart={handleTouchStart}
+          // onTouchMove={handleTouchMove}
+          // onTouchEnd={handleTouchEnd}
         >
           <Box
+            ref={scrollRef}
             sx={{
               width: "100vw",
               height: "100vh",
               display: "flex",
               flexDirection: "row",
-              transform: `translateX(-${mobilePage * 100}vw)`,
+              overflowX: "auto",
+              scrollBehavior: "smooth",
+              scrollSnapType: "x mandatory",
+              touchAction: "pan-y pan-x",
+              "&::-webkit-scrollbar": { display: "none" },
+              WebkitOverflowScrolling: "touch",
+              //transform: `translateX(-${activePage * 100}vw)`,
               transition: "transform 0.4s cubic-bezier(.4,1.3,.6,1)",
+              position: "relative",
             }}
           >
             {[...Array(PAGES)].map((_, index) => (
-              <Box
+              <SlideBox
                 key={index}
-                sx={{ width: "100vw", height: "100vh", flexShrink: 0 }}
+                sx={{
+                  scrollSnapAlign: "start",
+                  flexShrink: 0,
+                  width: "100vw",
+                  height: "100vh",
+                }}
               >
-                <SlideBox>
-                  <SlideContent index={index} />
-                </SlideBox>
-              </Box>
+                <SlideContent index={index} />
+              </SlideBox>
             ))}
           </Box>
           {/* Dots for mobile navigation */}
@@ -112,13 +125,13 @@ export default function App() {
             {[...Array(PAGES)].map((_, idx) => (
               <Box
                 key={idx}
-                onClick={() => setMobilePage(idx)}
+                onClick={() => scrollToPage(idx)}
                 sx={{
                   width: 10,
                   height: 10,
                   borderRadius: "50%",
                   background:
-                    mobilePage === idx ? "#fff" : "rgba(255,255,255,0.3)",
+                    activePage === idx ? "white" : "rgba(255,255,255,0.3)",
                   mx: 0.7,
                   cursor: "pointer",
                   transition: "background 0.2s",
@@ -134,7 +147,6 @@ export default function App() {
             height: { xs: "100vh", sm: "90%", md: "70%" },
             borderRadius: { xs: 0, sm: "18px", md: "20px" },
             overflow: "hidden",
-            pointerEvents: "none",
             backdropFilter: "blur(50px)",
           }}
         >
@@ -144,7 +156,6 @@ export default function App() {
               height: "100%",
               overflowY: "auto",
               scrollSnapType: "y mandatory",
-              pointerEvents: "auto",
               alignSelf: "center",
               "&::-webkit-scrollbar": { display: "none" },
               position: "relative",

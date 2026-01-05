@@ -1,8 +1,13 @@
-import { Box } from "@mui/material";
+import { Box, type BoxProps } from "@mui/material";
 
-export default function SlideBox({ children }: { children: React.ReactNode }) {
+interface SlideBoxProps extends BoxProps {
+  children: React.ReactNode;
+}
+
+export default function SlideBox({ children, ...props }: SlideBoxProps) {
   return (
     <Box
+      {...props}
       sx={{
         height: "100%",
         display: "flex",
@@ -12,6 +17,7 @@ export default function SlideBox({ children }: { children: React.ReactNode }) {
         maxWidth: "100vw",
         overflowX: "hidden",
         boxSizing: "border-box",
+        ...props.sx,
       }}
     >
       {children}
