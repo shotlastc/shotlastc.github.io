@@ -49,10 +49,10 @@ function ProjectCard({
     <Box
       sx={{
         border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: "12px",
+        borderRadius: { xs: "10px", md: "12px" },
         background: "rgba(255, 255, 255, 0.05)",
         backdropFilter: "blur(10px)",
-        p: 2,
+        p: { xs: 1.5, md: 2 },
         transition: "all 0.3s ease",
         position: "relative",
         overflow: "hidden",
@@ -76,7 +76,7 @@ function ProjectCard({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 1,
+          mb: { xs: 0.8, md: 1 },
         }}
       >
         <Box sx={{ flex: 1 }}>
@@ -87,7 +87,7 @@ function ProjectCard({
               fontWeight: 600,
               color: "white",
               mb: 0.5,
-              fontSize: "0.95rem",
+              fontSize: { xs: "0.85rem", md: "0.95rem" },
             }}
           >
             {title}
@@ -97,15 +97,15 @@ function ProjectCard({
             size="small"
             sx={{
               fontFamily: "JetBrains Mono Variable, monospace",
-              fontSize: "0.7rem",
-              height: "20px",
+              fontSize: { xs: "0.65rem", md: "0.7rem" },
+              height: { xs: "18px", md: "20px" },
               backgroundColor: getStatusColor(),
               color: "white",
               border: "1px solid rgba(255, 255, 255, 0.2)",
             }}
           />
         </Box>
-        <Stack direction="row" spacing={0.5}>
+        <Stack direction="row" spacing={0.5} mb={2}>
           {liveUrl && (
             <IconButton
               href={liveUrl}
@@ -115,14 +115,14 @@ function ProjectCard({
               size="small"
               sx={{
                 color: "white",
-                padding: "4px",
+                padding: { xs: "3px", md: "4px" },
                 backgroundColor: "rgba(255, 255, 255, 0.1)",
                 "&:hover": {
                   backgroundColor: "rgba(255, 255, 255, 0.2)",
                 },
               }}
             >
-              <OpenInNewIcon sx={{ fontSize: "16px" }} />
+              <OpenInNewIcon sx={{ fontSize: { xs: "14px", md: "16px" } }} />
             </IconButton>
           )}
           {githubUrl && (
@@ -134,14 +134,14 @@ function ProjectCard({
               size="small"
               sx={{
                 color: "white",
-                padding: "4px",
+                padding: { xs: "3px", md: "4px" },
                 backgroundColor: "rgba(255, 255, 255, 0.1)",
                 "&:hover": {
                   backgroundColor: "rgba(255, 255, 255, 0.2)",
                 },
               }}
             >
-              <GitHubIcon sx={{ fontSize: "16px" }} />
+              <GitHubIcon sx={{ fontSize: { xs: "14px", md: "16px" } }} />
             </IconButton>
           )}
         </Stack>
@@ -151,15 +151,15 @@ function ProjectCard({
         sx={{
           fontFamily: "JetBrains Mono Variable, monospace",
           color: "rgba(255, 255, 255, 0.7)",
-          fontSize: "0.8rem",
-          mb: 1.5,
+          fontSize: { xs: "0.75rem", md: "0.8rem" },
+          mb: { xs: 1, md: 1.5 },
           lineHeight: 1.4,
         }}
       >
         {description}
       </Typography>
 
-      <Stack direction="row" flexWrap="wrap" gap={0.5}>
+      <Stack direction="row" flexWrap="wrap" gap={{ xs: 0.4, md: 0.5 }}>
         {tags.slice(0, 4).map((tag) => (
           <Chip
             key={tag}
@@ -167,11 +167,11 @@ function ProjectCard({
             size="small"
             sx={{
               fontFamily: "JetBrains Mono Variable, monospace",
-              fontSize: "0.65rem",
+              fontSize: { xs: "0.6rem", md: "0.7rem" },
               backgroundColor: "rgba(255, 255, 255, 0.1)",
               color: "rgba(255, 255, 255, 0.8)",
               border: "1px solid rgba(255, 255, 255, 0.15)",
-              height: "20px",
+              height: { xs: "18px", md: "20px" },
             }}
           />
         ))}
@@ -181,11 +181,11 @@ function ProjectCard({
             size="small"
             sx={{
               fontFamily: "JetBrains Mono Variable, monospace",
-              fontSize: "0.65rem",
+              fontSize: { xs: "0.6rem", md: "0.65rem" },
               backgroundColor: "rgba(255, 255, 255, 0.05)",
               color: "rgba(255, 255, 255, 0.6)",
               border: "1px solid rgba(255, 255, 255, 0.1)",
-              height: "20px",
+              height: { xs: "18px", md: "20px" },
             }}
           />
         )}
@@ -214,21 +214,21 @@ export default function ProjectsSlide() {
     {
       title: "T12 Soldering Station",
       description:
-        "Soldering station with T12 tips and hot air. PID temperature control, OLED display, adjustable airflow.",
+        "Soldering station with T12 tips and hot air. PID temperature control, OLED display.",
       tags: ["Hardware", "Arduino", "PCB Design", "PID Control"],
       status: "completed" as const,
     },
     {
       title: "Web3 Farm Platform",
       description:
-        "Microservices platform for crypto mining with dynamic farm deployment and real-time monitoring.",
+        "Microservices platform for crypto mining with dynamic farm deployment and monitoring.",
       tags: ["React", "FastAPI", "Docker", "Microservices"],
       status: "in-progress" as const,
     },
     {
       title: "Cyberpunk Blender Add-on",
       description:
-        "Open-source contribution for importing Cyberpunk 2077 assets into Blender for 3D workflows.",
+        "Open-source contribution for importing Cyberpunk 2077 assets into Blender.",
       tags: ["Python", "Blender", "3D Graphics", "Open Source"],
       githubUrl: "https://github.com/WolvenKit/Cyberpunk-Blender-add-on/",
       status: "contribution" as const,
@@ -241,26 +241,14 @@ export default function ProjectsSlide() {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        //justifyContent: "center",
-        p: 4,
-        overflowY: "auto",
-        "&::-webkit-scrollbar": {
-          width: "8px",
-        },
-        "&::-webkit-scrollbar-track": {
-          background: "rgba(255, 255, 255, 0.05)",
-          borderRadius: "4px",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          background: "rgba(255, 255, 255, 0.2)",
-          borderRadius: "4px",
-          "&:hover": {
-            background: "rgba(255, 255, 255, 0.3)",
-          },
-        },
+        p: { xs: 1, sm: 2, md: 4 },
+        boxSizing: "border-box",
+        maxWidth: { xs: "100vw", md: "1200px" },
+        margin: "0 auto",
+        overflowY: { xs: "visible", md: "auto" },
       }}
     >
-      <Box sx={{ mb: 3 }}>
+      <Box sx={{ mb: { xs: 1.2, md: 3 } }}>
         <Typography
           variant="h3"
           sx={{
@@ -268,7 +256,7 @@ export default function ProjectsSlide() {
             fontWeight: 700,
             color: "white",
             mb: 1,
-            fontSize: { xs: "2rem", md: "2.5rem" },
+            fontSize: { xs: "1.3rem", sm: "1.7rem", md: "2.5rem" },
           }}
         >
           Featured Projects
@@ -277,7 +265,7 @@ export default function ProjectsSlide() {
           sx={{
             fontFamily: "JetBrains Mono Variable, monospace",
             color: "rgba(255, 255, 255, 0.6)",
-            fontSize: "0.95rem",
+            fontSize: { xs: "0.7rem", md: "0.95rem" },
           }}
         >
           A selection of my recent work and contributions
@@ -287,8 +275,12 @@ export default function ProjectsSlide() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 1fr 1fr" },
-          gap: 2,
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "1fr 1fr",
+            md: "1fr 1fr 1fr",
+          },
+          gap: { xs: 1, md: 2 },
           pb: 2,
         }}
       >

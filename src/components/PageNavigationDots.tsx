@@ -15,12 +15,12 @@ export default function PageNavigationDots({
     <Box
       sx={{
         position: "absolute",
-        right: 20,
+        right: { xs: 10, sm: 15, md: 20 },
         top: "50%",
         transform: "translateY(-50%)",
         display: "flex",
         flexDirection: "column",
-        gap: 1,
+        gap: { xs: 0.8, md: 1 },
         alignItems: "center",
         pointerEvents: "auto",
       }}
@@ -30,8 +30,8 @@ export default function PageNavigationDots({
           key={index}
           onClick={() => onPageClick(index)}
           sx={{
-            width: 12,
-            height: 12,
+            width: { xs: 10, md: 12 },
+            height: { xs: 10, md: 12 },
             borderRadius: "50%",
             backgroundColor:
               activePage === index ? "white" : "rgba(255,255,255,0.3)",

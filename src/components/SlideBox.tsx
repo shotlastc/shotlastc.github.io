@@ -8,7 +8,10 @@ export default function SlideBox({ children }: { children: React.ReactNode }) {
         display: "flex",
         flexDirection: "column",
         scrollSnapAlign: "start",
-        p: 4,
+        p: { xs: 2, sm: 3, md: 4 },
+        maxWidth: "100vw",
+        overflowX: "hidden",
+        boxSizing: "border-box",
       }}
     >
       {children}

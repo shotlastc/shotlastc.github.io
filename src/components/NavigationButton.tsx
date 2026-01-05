@@ -16,19 +16,20 @@ export default function NavigationButton({
     <Box
       sx={{
         position: "absolute",
-        [position]: 20,
+        [position]: { xs: 10, sm: 15, md: 20 },
         left: "50%",
         transform: "translateX(-50%)",
         pointerEvents: "auto",
         cursor: "pointer",
         transition: "transform 0.3s ease",
+        display: { xs: "none", sm: "block" },
         "&:hover": {
           transform: "translateX(-50%) scale(1.05)",
         },
       }}
       onClick={onClick}
     >
-      <ScrollButton variant={0} width={120} height={40} text={text} />
+      <ScrollButton variant={0} width={100} height={35} text={text} />
     </Box>
   );
 }

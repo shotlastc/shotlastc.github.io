@@ -6,11 +6,32 @@ import PageNavigationDots from "./components/PageNavigationDots";
 import NavigationButton from "./components/NavigationButton";
 import { usePageScroll } from "./hooks/usePageScroll";
 import "@fontsource-variable/jetbrains-mono/wght.css";
+import { useRef, useState } from "react";
 
 const PAGES = 4;
 
 export default function App() {
   const { activePage, scrollRef, scrollToPage } = usePageScroll(PAGES);
+  const [mobilePage, setMobilePage] = useState(0);
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  // Swipe handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+  const handleTouchEnd = () => {
+    const delta = touchEndX.current - touchStartX.current;
+    if (Math.abs(delta) > 50) {
+      if (delta < 0 && mobilePage < PAGES - 1) setMobilePage(mobilePage + 1);
+      if (delta > 0 && mobilePage > 0) setMobilePage(mobilePage - 1);
+    }
+  };
+
+  const mobile = typeof window !== "undefined" && window.innerWidth <= 600;
 
   return (
     <Box
@@ -22,6 +43,8 @@ export default function App() {
         justifyContent: "center",
         position: "relative",
         backgroundColor: "#121212",
+        padding: { xs: 0, sm: 0 },
+        overflow: "hidden",
       }}
     >
       {/* Background */}
@@ -34,77 +57,129 @@ export default function App() {
           height: "100%",
         }}
       >
-        {/* <Dither
-          waveColor={[0.15, 0.15, 0.15]}
-          disableAnimation={false}
-          enableMouseInteraction={false}
-          mouseRadius={0.3}
-          colorNum={4}
-          waveAmplitude={0.3}
-          waveFrequency={3}
-          waveSpeed={0.05}
-          pixelSize={2}
-        /> */}
         <DarkVeil />
       </Box>
 
       {/* Main Content Container */}
-      <Box
-        sx={{
-          width: "70%",
-          height: "70%",
-          borderRadius: "20px",
-          position: "relative",
-          overflow: "hidden",
-          pointerEvents: "none",
-          backdropFilter: "blur(50px)",
-        }}
-      >
-        {/* Scrollable Slides */}
+      {mobile ? (
         <Box
-          ref={scrollRef}
           sx={{
-            height: "100%",
-            overflowY: "auto",
-            scrollSnapType: "y mandatory",
-            pointerEvents: "auto",
-            alignSelf: "center",
-            "&::-webkit-scrollbar": { display: "none" },
+            width: "100vw",
+            height: "100vh",
+            borderRadius: 0,
+            overflow: "hidden",
             position: "relative",
+            touchAction: "pan-y",
+            backdropFilter: "blur(50px)",
+          }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          <Box
+            sx={{
+              width: "100vw",
+              height: "100vh",
+              display: "flex",
+              flexDirection: "row",
+              transform: `translateX(-${mobilePage * 100}vw)`,
+              transition: "transform 0.4s cubic-bezier(.4,1.3,.6,1)",
+            }}
+          >
+            {[...Array(PAGES)].map((_, index) => (
+              <Box
+                key={index}
+                sx={{ width: "100vw", height: "100vh", flexShrink: 0 }}
+              >
+                <SlideBox>
+                  <SlideContent index={index} />
+                </SlideBox>
+              </Box>
+            ))}
+          </Box>
+          {/* Dots for mobile navigation */}
+          <Box
+            sx={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              bottom: 16,
+              display: "flex",
+              justifyContent: "center",
+              zIndex: 10,
+            }}
+          >
+            {[...Array(PAGES)].map((_, idx) => (
+              <Box
+                key={idx}
+                onClick={() => setMobilePage(idx)}
+                sx={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: "50%",
+                  background:
+                    mobilePage === idx ? "#fff" : "rgba(255,255,255,0.3)",
+                  mx: 0.7,
+                  cursor: "pointer",
+                  transition: "background 0.2s",
+                }}
+              />
+            ))}
+          </Box>
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            width: { xs: "100vw", sm: "90%", md: "70%" },
+            height: { xs: "100vh", sm: "90%", md: "70%" },
+            borderRadius: { xs: 0, sm: "18px", md: "20px" },
+            overflow: "hidden",
+            pointerEvents: "none",
+            backdropFilter: "blur(50px)",
           }}
         >
-          {[...Array(PAGES)].map((_, index) => (
-            <SlideBox key={index}>
-              <SlideContent index={index} />
-            </SlideBox>
-          ))}
+          <Box
+            ref={scrollRef}
+            sx={{
+              height: "100%",
+              overflowY: "auto",
+              scrollSnapType: "y mandatory",
+              pointerEvents: "auto",
+              alignSelf: "center",
+              "&::-webkit-scrollbar": { display: "none" },
+              position: "relative",
+            }}
+          >
+            {[...Array(PAGES)].map((_, index) => (
+              <SlideBox key={index}>
+                <SlideContent index={index} />
+              </SlideBox>
+            ))}
+          </Box>
+
+          <PageNavigationDots
+            pages={PAGES}
+            activePage={activePage}
+            onPageClick={scrollToPage}
+          />
+
+          {activePage > 0 && (
+            <NavigationButton
+              position="top"
+              onClick={() => scrollToPage(Math.max(0, activePage - 1))}
+              text="↑ BACK"
+            />
+          )}
+
+          {activePage < PAGES - 1 && (
+            <NavigationButton
+              position="bottom"
+              onClick={() => scrollToPage(Math.min(PAGES - 1, activePage + 1))}
+              text="↓ SCROLL"
+            />
+          )}
         </Box>
-
-        {/* Navigation Dots */}
-        <PageNavigationDots
-          pages={PAGES}
-          activePage={activePage}
-          onPageClick={scrollToPage}
-        />
-
-        {/* Back Button */}
-        {activePage > 0 && (
-          <NavigationButton
-            position="top"
-            onClick={() => scrollToPage(Math.max(0, activePage - 1))}
-            text="↑ BACK"
-          />
-        )}
-
-        {/* Scroll Button */}
-        {activePage < PAGES - 1 && (
-          <NavigationButton
-            position="bottom"
-            onClick={() => scrollToPage(Math.min(PAGES - 1, activePage + 1))}
-            text="↓ SCROLL"
-          />
-        )}
-      </Box>
+      )}
     </Box>
   );
 }
