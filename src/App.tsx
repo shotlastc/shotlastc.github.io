@@ -6,7 +6,6 @@ import PageNavigationDots from "./components/PageNavigationDots";
 import NavigationButton from "./components/NavigationButton";
 import { usePageScroll } from "./hooks/usePageScroll";
 import "@fontsource-variable/jetbrains-mono/wght.css";
-import { useRef, useState } from "react";
 
 const PAGES = 4;
 
@@ -16,24 +15,6 @@ export default function App() {
     PAGES,
     mobile ? "horizontal" : "vertical",
   );
-  const [mobilePage, setMobilePage] = useState(0);
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
-
-  // Swipe handlers for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-  const handleTouchEnd = () => {
-    const delta = touchEndX.current - touchStartX.current;
-    if (Math.abs(delta) > 50) {
-      if (delta < 0 && mobilePage < PAGES - 1) setMobilePage(mobilePage + 1);
-      if (delta > 0 && mobilePage > 0) setMobilePage(mobilePage - 1);
-    }
-  };
 
   return (
     <Box
