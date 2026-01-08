@@ -197,12 +197,20 @@ function ProjectCard({
 export default function ProjectsSlide() {
   const projects = [
     {
-      title: "Dr. Panchuk CRM",
+      title: "Dr. Panchuk Website",
       description:
-        "Full-stack CRM system for medical clinic with patient records, appointment scheduling, and analytics.",
+        "Modern medical clinic website with service catalog, and responsive design.",
+      tags: ["React", "JavaScript", "Chakra-UI"],
+      liveUrl: "https://www.drpanchuk.com.ua/",
+      status: "completed" as const,
+    },
+    {
+      title: "Dental CRM",
+      description:
+        "Full-stack CRM system for medical clinic with patient records and appointment scheduling.",
       tags: ["React", "TypeScript", "FastAPI", "PostgreSQL"],
       liveUrl: "https://crm.drpanchuk.com.ua/",
-      status: "completed" as const,
+      status: "in-progress" as const,
     },
     {
       title: "Custom Mechanical Keyboard",
@@ -221,7 +229,7 @@ export default function ProjectsSlide() {
     {
       title: "Web3 Farm Platform",
       description:
-        "Microservices platform for crypto mining with dynamic farm deployment and monitoring.",
+        "Microservices platform for crypto activities with dynamic farm deployment and monitoring.",
       tags: ["React", "FastAPI", "Docker", "Microservices"],
       status: "in-progress" as const,
     },

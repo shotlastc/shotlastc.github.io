@@ -12,7 +12,7 @@ export default function SlideBox({ children, ...props }: SlideBoxProps) {
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        scrollSnapAlign: "start",
+        scrollSnapAlign: "center",
         p: { xs: 2, sm: 3, md: 4 },
         maxWidth: "100vw",
         overflowX: "hidden",
